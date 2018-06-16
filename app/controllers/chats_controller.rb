@@ -7,6 +7,8 @@ class ChatsController < ApplicationController
   protect_from_forgery except: :index
 
   @@botname = ENV["BOT_NAME"]
+  @@t = 0
+  @@mode = ""
 
   def post_to_typetalk(message,post_id)
 
@@ -47,22 +49,25 @@ class ChatsController < ApplicationController
   end
 
   def set_mode(user_message)
+    @@t = 0
+    @@mode = ""
+
     if user_message.include?("デフォルトキャラ")
-        @@character = 10
+        @@t = 10
         return "デフォルトキャラ"
     elsif user_message.include?("関西弁キャラ")
-        @@character = 20
+        @@t = 20
         return "関西弁キャラ"
     elsif user_message.include?("赤ちゃんキャラ")
-        @@character = 30
+        @@t = 30
         return "赤ちゃんキャラ"
     end
 
     if user_message.include?("雑談モード")
-        @@dialogue_mode = "dialog"
+        @@mode = "dialog"
         return "雑談モード"
     elsif user_message.include?("しりとりモード")
-        @@dialogue_mode = "srtr"
+        @@mode = "srtr"
         return "しりとりモード"
     end
 
