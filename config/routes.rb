@@ -1,3 +1,3 @@
 Rails.application.routes.draw do
-  resources :chats, only: [:index]
+  post '/chats', to: 'chats#index'
 end
