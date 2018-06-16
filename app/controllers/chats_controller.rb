@@ -1,3 +1,8 @@
+require 'net/http'
+require 'uri'
+require 'json'
+require 'docomoru'
+
 class ChatsController < ApplicationController
   protect_from_forgery except: :index
 
