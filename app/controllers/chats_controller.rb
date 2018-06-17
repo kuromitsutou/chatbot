@@ -108,6 +108,7 @@ class ChatsController < ApplicationController
     user_name = post_content['post']['account']['name']
     post_id = post_content['post']['id']
     com_message = '';
+    last_dialogue = Dialogue.find_by(user_name: user_name)
 
     # mode setting
     mode = set_mode(user_message)
@@ -119,8 +120,6 @@ class ChatsController < ApplicationController
       response = post_to_docomo_api(user_message,last_dialogue)
       com_message = response.body['utt']
     end
-
-      last_dialogue = Dialogue.find_by(user_name: user_name)
 
       # save last dialogue
       save_last_dialogue(last_dialogue,response,user_name)
