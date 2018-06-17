@@ -113,7 +113,7 @@ class ChatsController < ApplicationController
     else
       # get message from docomo API
       last_dialogue = Dialogue.find_by(user_name: user_name)
-      response = post_to_docomo_api(user_message,dialogue)
+      response = post_to_docomo_api(user_message,last_dialogue)
       com_message = response.body['utt']
 
       # save last dialogue
