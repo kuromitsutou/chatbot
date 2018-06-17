@@ -117,7 +117,7 @@ class ChatsController < ApplicationController
       com_message = response.body['utt']
 
       # save last dialogue
-      save_last_dialogue(last_dialogue_infos,response,user_name)
+      save_last_dialogue(last_dialogue,response,user_name)
     end
 
       # send message to typetalk
