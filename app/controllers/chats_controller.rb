@@ -78,21 +78,17 @@ class ChatsController < ApplicationController
     if last_dialogue_infos.nil?
         param = {}
         param["user_name"] = user_name
-        if response != nil
-          param["mode"] = response.body['mode']
-          param["da"] = response.body['da']
-          param["context"] = response.body['context']
-        end
+        param["mode"] = response.body['mode']
+        param["da"] = response.body['da']
+        param["context"] = response.body['context']
         if @@t != 0
             param["t"] = @@t
         end
         last_dialogue_infos = Dialogue.new(param)
     else
-      if response != nil
-        last_dialogue_infos.mode = response.body['mode']
-        last_dialogue_infos.da = response.body['da']
-        last_dialogue_infos.context = response.body['context']
-      end
+      last_dialogue_infos.mode = response.body['mode']
+      last_dialogue_infos.da = response.body['da']
+      last_dialogue_infos.context = response.body['context']
       if @@t != 0
           last_dialogue_infos.t = @@t
       end
@@ -112,12 +108,11 @@ class ChatsController < ApplicationController
 
     # mode setting
     mode = set_mode(user_message)
+    response = post_to_docomo_api(user_message,last_dialogue)
     if mode != ""
-      response = nil
       com_message = "#{mode}に変更しました。"
     else
       # get message from docomo API
-      response = post_to_docomo_api(user_message,last_dialogue)
       com_message = response.body['utt']
     end
 
