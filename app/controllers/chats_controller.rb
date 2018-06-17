@@ -84,7 +84,7 @@ class ChatsController < ApplicationController
         if @@t != 0
             param["t"] = @@t
         end
-        last_dialogue_infos = LastDialogueInfo.new(param)
+        last_dialogue_infos = Dialogue.new(param)
     else
         last_dialogue_infos.mode = response.body['mode']
         last_dialogue_infos.da = response.body['da']
