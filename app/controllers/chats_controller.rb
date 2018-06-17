@@ -78,20 +78,24 @@ class ChatsController < ApplicationController
     if last_dialogue_infos.nil?
         param = {}
         param["user_name"] = user_name
-        param["mode"] = response.body['mode']
-        param["da"] = response.body['da']
-        param["context"] = response.body['context']
+        if response != nil
+          param["mode"] = response.body['mode']
+          param["da"] = response.body['da']
+          param["context"] = response.body['context']
+        end
         if @@t != 0
             param["t"] = @@t
         end
         last_dialogue_infos = Dialogue.new(param)
     else
+      if response != nil
         last_dialogue_infos.mode = response.body['mode']
         last_dialogue_infos.da = response.body['da']
         last_dialogue_infos.context = response.body['context']
-        if @@t != 0
-            last_dialogue_infos.t = @@t
-        end
+      end
+      if @@t != 0
+          last_dialogue_infos.t = @@t
+      end
     end
     last_dialogue_infos.save!
   end
@@ -108,17 +112,18 @@ class ChatsController < ApplicationController
     # mode setting
     mode = set_mode(user_message)
     if mode != ""
+      response = nil
       com_message = "#{mode}に変更しました。"
-
     else
       # get message from docomo API
-      last_dialogue = Dialogue.find_by(user_name: user_name)
       response = post_to_docomo_api(user_message,last_dialogue)
       com_message = response.body['utt']
+    end
+
+      last_dialogue = Dialogue.find_by(user_name: user_name)
 
       # save last dialogue
       save_last_dialogue(last_dialogue,response,user_name)
-    end
 
       # send message to typetalk
       post_to_typetalk(com_message,post_id)
