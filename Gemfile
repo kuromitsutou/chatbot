@@ -29,6 +29,7 @@ gem 'jbuilder', '~> 2.5'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
+gem 'docomoru'
 
 group :development, :test do
   # Use mysql as the database for Active Record
