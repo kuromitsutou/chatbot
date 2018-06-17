@@ -97,7 +97,6 @@ class ChatsController < ApplicationController
   end
 
   def index
-
     # get message from typetalk
     post_content = JSON.parse(request.body.read)
     user_message = post_content['post']['message'].delete("@#{@@botname}+ ")
@@ -108,18 +107,15 @@ class ChatsController < ApplicationController
 
     # mode setting
     mode = set_mode(user_message)
+
+    # get message from docomo API
     response = post_to_docomo_api(user_message,last_dialogue)
-    if mode != ""
-      com_message = "#{mode}に変更しました。"
-    else
-      # get message from docomo API
-      com_message = response.body['utt']
-    end
+    com_message = response.body['utt']
 
-      # save last dialogue
-      save_last_dialogue(last_dialogue,response,user_name)
+    # save last dialogue
+    save_last_dialogue(last_dialogue,response,user_name)
 
-      # send message to typetalk
-      post_to_typetalk(com_message,post_id)
+    # send message to typetalk
+    post_to_typetalk(com_message,post_id)
   end
 end
